@@ -6,7 +6,7 @@
     - websocket_balancer
 
 - name: Setup ucentrald
-  hosts: backend
+  hosts: ucentrald
   become: true
   roles:
-    - backend
+    - ucentrald
