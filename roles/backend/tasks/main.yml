@@ -1,0 +1,42 @@
+---
+- name: Create user
+  user:
+    name: "ucentrald"
+    shell: /bin/bash
+
+- name: Install requirements
+  apt: 
+    name: git
+    state: present
+    update_cache: true
+
+- name: Clone ucentrald
+  git:
+    repo: "{{ ucentrald_repo }}"
+    dest: "{{ ucentrald_dest }}"
+    update: true
+
+- name: chmod to ucentrald_user
+  file:
+    path: "{{ ucentrald_dest }}"
+    state: directory
+    recurse: yes
+    owner: "{{ ucentrald_user }}"
+    group: "{{ ucentrald_user }}"
+
+- name: Install ucentrald config
+  template:
+    src: ucentrald.config.j2
+    dest: "{{ ucentrald_dest }}/ucentrald.cfg"
+    owner: "{{ ucentrald_user }}"
+    group: "{{ ucentrald_user }}"
+
+- name: Install systemd service
+  template:
+    src: ucentrald.service.j2
+    dest: /etc/systemd/system/ucentrald.service
+
+- name: Start ucentrald service
+  service:
+    name: ucentrald
+    state: started

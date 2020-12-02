@@ -1,0 +1,12 @@
+[Unit]
+Description=uCentral daemon for OpenWrt cloud management
+After=network.target
+
+[Service]
+User={{ ucentrald_user }}
+ExecStart=python3 {{ ucentrald_bin }}
+WorkingDirectory={{ ucentrald_dest }}
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,12 @@
+---
+- name: Setup websocket balancer
+  hosts: websocket_balancer
+  become: true
+  roles:
+    - websocket_balancer
+
+- name: Setup ucentrald
+  hosts: backend
+  become: true
+  roles:
+    - backend
