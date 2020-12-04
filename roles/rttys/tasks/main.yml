@@ -1,0 +1,53 @@
+
+- name: Create rttys_user
+  user:
+    name: "{{ rttys_user | default('rttys') }}"
+    shell: /bin/bash
+
+- name: Download rttys
+  get_url:
+    url: "{{ rttys_bin_url }}"
+    dest: "{{ rttys_dest }}/rttys.tar.gz"
+
+- name: Unarchive rtty
+  unarchive:
+    extra_opts:
+      - --strip-components=1
+    src: "{{ rttys_dest }}/rttys.tar.gz"
+    dest: "{{ rttys_dest }}"
+    remote_src: yes
+
+- name: Install rttys config
+  template:
+    src: rttys.conf.j2
+    dest: "{{ rttys_dest }}/rttys.conf"
+    owner: "{{ rttys_user }}"
+    group: "{{ rttys_user }}"
+  notify:
+    - restart rttys
+
+- name: Install systemd service
+  template:
+    src: rttys.service.j2
+    dest: /etc/systemd/system/rttys.service
+
+- name: Start rttys service
+  systemd:
+    daemon_reload: true
+    enabled: true
+    name: rttys
+    state: started
+
+- name: Install nginx proxy conf
+  template:
+    src: nginx.proxy.conf.j2
+    dest: /etc/nginx/sites-enabled/rttys.conf
+  notify:
+    - reload nginx
+
+- name: Install nginx stream conf
+  template:
+    src: nginx.stream.conf.j2
+    dest: /etc/nginx/stream.d/rttys.conf
+  notify:
+    - reload nginx

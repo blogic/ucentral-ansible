@@ -1,0 +1,10 @@
+---
+- name: restart ucentrald
+  service:
+    name: ucentrald
+    state: restarted
+
+- name: reload nginx 
+  service:
+    name: nginx
+    state: reloaded

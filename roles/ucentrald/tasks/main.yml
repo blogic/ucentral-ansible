@@ -1,7 +1,7 @@
 ---
 - name: Create user
   user:
-    name: "ucentrald"
+    name: "{{ ucentrald_user }}"
     shell: /bin/bash
 
 - name: Install requirements
@@ -10,10 +10,11 @@
     state: present
     update_cache: true
 
-- name: Clone ucentrald
+- name: Clone ucentrald git repository
   git:
     repo: "{{ ucentrald_repo }}"
     dest: "{{ ucentrald_dest }}"
+    force: true
     update: true
 
 - name: chmod to ucentrald_user
@@ -26,10 +27,12 @@
 
 - name: Install ucentrald config
   template:
-    src: ucentrald.config.j2
+    src: ucentrald.cfg.j2
     dest: "{{ ucentrald_dest }}/ucentrald.cfg"
     owner: "{{ ucentrald_user }}"
     group: "{{ ucentrald_user }}"
+  notify:
+    - restart ucentrald
 
 - name: Install systemd service
   template:
@@ -37,6 +40,16 @@
     dest: /etc/systemd/system/ucentrald.service
 
 - name: Start ucentrald service
-  service:
+  systemd:
+    daemon_reload: true
+    enabled: true
     name: ucentrald
     state: started
+
+- name: Install nginx proxy conf
+  template:
+    src: nginx.proxy.conf.j2
+    dest: /etc/nginx/sites-enabled/ucentrald.conf
+  notify:
+    - reload nginx
+  when: ucentrald_self_signed == false

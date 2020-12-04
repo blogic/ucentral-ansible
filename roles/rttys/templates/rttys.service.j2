@@ -1,0 +1,13 @@
+[Unit]
+Description=rtty server programm
+After=network.target
+
+[Service]
+ExecStart={{ rttys_dest }}/{{ rttys_bin | default('./rttys') }}  -log {{ rttys_dest }}/log.txt
+PrivateTmp=true
+Restart=on-failure
+User={{ rttys_user }}
+WorkingDirectory={{ rttys_dest }}
+
+[Install]
+WantedBy=multi-user.target

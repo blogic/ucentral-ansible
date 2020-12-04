@@ -1,9 +1,14 @@
 user www-data;
 worker_processes auto;
 pid /run/nginx.pid;
+load_module /usr/lib/nginx/modules/ngx_stream_module.so;
 
 events {
 	worker_connections 768;
+}
+
+stream {
+	include /etc/nginx/stream.d/*;
 }
 
 http {

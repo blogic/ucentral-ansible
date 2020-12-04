@@ -1,0 +1,7 @@
+addr-dev: {{ rttys_bind | default('localhost') }}:{{ rttys_dev_port | default(5912) }}
+addr-user: {{ rttys_bind | default('localhost') }}:{{ rttys_user_port | default(5913) }}
+
+http-username: {{ rttys_username }}
+http-password: {{ rttys_password }}
+
+token: {{ rttys_token }}

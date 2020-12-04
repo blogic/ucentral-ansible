@@ -1,12 +1,19 @@
 ---
-- name: Setup websocket balancer
-  hosts: websocket_balancer
+- name: Setup rttys
+  hosts: rttys
   become: true
   roles:
-    - websocket_balancer
+    - rttys
 
 - name: Setup ucentrald
   hosts: ucentrald
   become: true
   roles:
     - ucentrald
+
+- name: Setup websocket balancer
+  hosts: websocket_balancer
+  become: true
+  roles:
+    - websocket_balancer
+

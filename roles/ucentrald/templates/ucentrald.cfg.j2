@@ -1,0 +1,14 @@
+{
+	{% if ucentrald_self_signed -%}
+	"ssl_key": "key.pem",
+	"ssl_cert": "cert.pem",
+	{% endif -%}
+
+	"bind": "{{ ucentrald_bind | default("localhost") }}",
+	"port": "{{ ucentrald_port | default(11783) }}",
+
+	"config_folder": "{{ ucentrald_config_folder | default("configs/") }}",
+	"capab_folder": "{{ ucentrald_capab_folder | default("capab/") }}",
+	"state_folder": "{{ ucentrald_state_folder | default("state/") }}"
+}
+

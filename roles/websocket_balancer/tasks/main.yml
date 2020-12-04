@@ -1,9 +1,8 @@
----
-- name: Upgrade system
-  apt: upgrade=dist update_cache=yes
-
 - name: Install nginx
-  apt: name=nginx state=latest
+  apt:
+    name: nginx-extras
+    state: latest
+    update_cache: true
 
 - name: install letsencrypt
   apt: name=letsencrypt state=latest
@@ -30,15 +29,15 @@
   args:
     creates: /etc/nginx/dhparams.pem
 
-- name: Install nginx websocket proxy configuration
-  template:
-    src: nginx.websocket.conf.j2
-    dest: /etc/nginx/sites-enabled/{{ websocket_url }}.conf
-  notify:
-    - reload nginx
 
 - name: Add letsencrypt cronjob for cert renewal
   cron:
     name: letsencrypt_renewal
     special_time: weekly
     job: letsencrypt --renew certonly -n --standalone -m {{ letsencrypt_email }} --agree-tos -d {{ websocket_url }} && service nginx reload
+
+- name: Create stream.d folder
+  file:
+    path: /etc/nginx/stream.d/
+    state: directory
+    mode: '0755'

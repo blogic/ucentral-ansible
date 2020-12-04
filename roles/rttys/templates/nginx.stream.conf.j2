@@ -1,0 +1,13 @@
+upstream rttys_dev {
+	server {{ rttys_bind | default('localhost') }}:{{ rttys_dev_port }};
+}
+
+server {
+	listen {{ rttys_proxy_dev_port }} ssl;
+	proxy_pass rttys_dev;
+
+	ssl_certificate         /etc/letsencrypt/live/{{ rttys_url }}/fullchain.pem;
+	ssl_certificate_key     /etc/letsencrypt/live/{{ rttys_url }}/privkey.pem;
+	ssl_trusted_certificate /etc/letsencrypt/live/{{ rttys_url }}/fullchain.pem;
+	ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+}

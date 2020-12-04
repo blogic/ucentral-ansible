@@ -1,0 +1,11 @@
+ucentrald_self_signed: True
+
+ucentrald_bind: 0.0.0.0
+ucentrald_port: 11783
+ucentrald_proxy_port: 3000
+
+ucentrald_repo: https://github.com/aparcar/usync-py-ws.git
+ucentrald_user: ucentral
+ucentrald_bin: ucentrald.py
+ucentrald_dest: /home/ucentral/ucentrald/
+ucentrald_url: websocket.usync.org

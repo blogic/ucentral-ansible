@@ -1,0 +1,13 @@
+
+rttys_user: rtty
+rttys_username: test
+rttys_password: test
+rttys_token: 7049cb6b7949ba06c6b356d76f0f6275
+rttys_bin_url: https://github.com/zhaojh329/rttys/files/4334190/rttys-linux-amd64.tar.gz
+rttys_bin: ./rttys
+rttys_dest: /home/rtty
+rttys_url: websocket.usync.org
+rttys_dev_port: 15912
+rttys_proxy_dev_port: 5912
+rttys_user_port: 15913
+rttys_proxy_user_port: 5913
